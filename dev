@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-compass watch . --poll --css-dir . --sass-dir src --images-dir img
