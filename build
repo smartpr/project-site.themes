@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+compass compile . --css-dir . --sass-dir src --images-dir img --force --output-style compressed

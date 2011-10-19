@@ -1,0 +1,212 @@
+$blueprint-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+$blueprint-fixed-font-family: Consolas, Menlo, monospace;
+$blueprint-font-size: 14px;
+$link-color: #1e90ff;	// DodgerBlue
+$default-text-shadow-v-offset: .1em;
+
+// Enable the first instead of the second line and fill in your local URL
+// during development.
+//$path: "http://dev/project-site.themes";
+$path: "https://raw.github.com/smartpr/project-site.themes/master";
+
+// Check out [the site](http://necolas.github.com/normalize.css/).
+@import url("#{$path}/shared/normalize.css");
+
+// Generated from the command line:
+//     pygmentize -S default -f html > pygments.default.css
+@import url("#{$path}/shared/pygments.default.css");
+
+// This is a partial and will not result in an `@import` statement, so we can
+// reference it relatively.
+@import "../shared/animation";
+
+@import "compass/css3";
+@import "compass/typography";
+@import "blueprint/typography";
+
+// Locals.
+$gray-line: #eaeaea;
+$gray-fill: adjust-lightness($gray-line, 4%);
+$inverted-color: #f5f5f5;	// WhiteSmoke
+$love: #ff0000;	// Red
+$side-space: 2em;
+
+// BASE
+
+@include blueprint-typography;
+
+html {
+	overflow: {
+		// We don't want horizontal animations to result in horizontal
+		// scrollbars popping up for a brief moment.
+		x: hidden;
+		// We don't want centered content to move position when switching from
+		// a page that doesn't require scrolling to a page that does (and vice
+		// versa).
+		y: scroll;
+	}
+}
+
+body {
+	-webkit-font-smoothing: antialiased;
+}
+
+header {
+	margin: 0 2em;
+	h1 {
+		// We are building upon the rhythm as set by `blueprint-typography`,
+		// which uses a bottom spacing of 1.5 times the baseline font height.
+		// This means that for any element with a `font-size` other than `1em`
+		// we have to normalize in order to preserve the rhythm. `h1` has a
+		// `font-size` of `3em`, so that's the normalizing factor that we use
+		// here.
+		margin: (1.5em/3) 0 0 0;
+		.version {
+			color: $gray-fill;
+		}
+	}
+	h2 {
+		font-size: 1.5em;
+		margin: 0 0 (1.5em/1.5) 0;
+	}
+}
+
+nav {
+	margin-bottom: 1.5em;
+	padding: .5em $side-space;
+
+	background-color: $link-color;
+
+	a {
+		@include hover-link;
+		@include link-colors($inverted-color, $inverted-color, $inverted-color, $inverted-color, $inverted-color);
+		@include single-text-shadow($font-color);
+
+		&.selected {
+			font-weight: bold;
+		}
+
+		margin-left: .7em;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}
+
+#{headings()} {
+	font-family: Calibri, $blueprint-font-family;
+}
+
+section {
+	margin: 0 $side-space;
+	max-width: 80em;
+
+	aside {
+		float: right;
+		width: 30%;
+	}
+	article {
+		margin-right: 35%;
+	}
+}
+
+code {
+	// We need this to deal with [this issue](https://github.com/necolas/
+	// normalize.css/issues/55).
+	// TODO: In IE lines are still wrapping.
+	word-wrap: normal;
+	background-color: $gray-fill;
+	padding: .2em 0;
+}
+
+.highlight {
+	overflow-x: auto;
+	background-color: $gray-fill;
+	@include border-radius;
+	border: {
+		top: 1px solid $gray-line;
+		bottom: 1px solid $gray-line;
+	}
+
+	& > pre {
+		margin: 0;
+		padding: .5em;
+		code {
+			// Cancel out inline `code` style.
+			background-color: transparent;
+			padding: 0;
+		}
+	}
+	margin-bottom: 1.5em;
+}
+
+footer {
+	position: relative;
+	border-top: 1px dashed $gray-line;
+
+	font-size: .8em;
+	margin: (1.5em*2/.8) 0 0 0;
+	p {
+		margin-bottom: (1.5em/.8);
+	}
+	padding: 1em $side-space/.8 0 $side-space/.8;
+	.no-theme {
+		position: absolute;
+		top: 1em;
+		right: $side-space/.8;
+
+		opacity: .2;
+		@include single-transition(opacity);
+	}
+	&:hover .no-theme {
+		opacity: 1;
+	}
+
+	.love {
+		color: $love;
+	}
+}
+
+// SPONSORED
+
+#sponsor {
+	@include animation(bounceInRight, 1s, 2s, ease, both);
+
+	p {
+		font-size: .8em;
+		text-align: center;
+		background: {
+			// TODO: In IE this image doesn't show (while the other does).
+			image: inline-image("smartpr-bulb.png");
+			repeat: no-repeat;
+			position: center top;
+		}
+
+		margin: 0;
+		padding: {
+			top: image-height("smartpr-bulb.png") + 10px;
+			// The axis of the logo is not in the middle of the image, so we
+			// have to shift the text a bit.
+			right: 8px;
+			bottom: image-height("smartpr-name.png");
+			left: 0;
+		}
+		width: image-width("smartpr-bulb.png") - 8px;
+
+		position: relative;
+		a {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+
+			@include hide-text;
+			background: {
+				image: inline-image("smartpr-name.png");
+				repeat: no-repeat;
+				position: center image-height("smartpr-bulb.png") + 30px;
+			}
+		}
+	}
+}
