@@ -7,7 +7,7 @@ $default-text-shadow-v-offset: .1em;
 // Enable the first instead of the second line and fill in your local URL
 // during development.
 //$path: "http://dev/project-site.themes";
-$path: "https://raw.github.com/smartpr/project-site.themes/master";
+$path: "http://projects.smart.pr/project-site.themes";
 
 // Check out [the site](http://necolas.github.com/normalize.css/).
 @import url("#{$path}/shared/normalize.css");
