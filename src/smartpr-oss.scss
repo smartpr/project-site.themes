@@ -26,7 +26,7 @@ $path: "http://projects.smart.pr/project-site.themes";
 
 // Locals.
 $gray-line: #eaeaea;
-$gray-fill: adjust-lightness($gray-line, 4%);
+$gray-fill: adjust-lightness($gray-line, 5%);
 $inverted-color: #f5f5f5;	// WhiteSmoke
 $love: #ff0000;	// Red
 $side-space: 2em;
@@ -36,6 +36,7 @@ $side-space: 2em;
 @include blueprint-typography;
 
 html {
+	background-color: $gray-fill;
 	overflow: {
 		// We don't want horizontal animations to result in horizontal
 		// scrollbars popping up for a brief moment.
@@ -49,65 +50,110 @@ html {
 
 body {
 	-webkit-font-smoothing: antialiased;
-}
+	background-color: White;
 
-header {
-	margin: 0 2em;
-	h1 {
-		// We are building upon the rhythm as set by `blueprint-typography`,
-		// which uses a bottom spacing of 1.5 times the baseline font height.
-		// This means that for any element with a `font-size` other than `1em`
-		// we have to normalize in order to preserve the rhythm. `h1` has a
-		// `font-size` of `3em`, so that's the normalizing factor that we use
-		// here.
-		margin: (1.5em/3) 0 0 0;
-		.version {
-			color: $gray-fill;
+	& > header {
+		margin: 0 2em;
+		// Make sure no background color from `html` is visible.
+		overflow-y: hidden;
+		h1 {
+			// We are building upon the rhythm as set by `blueprint-
+			// typography`, which uses a bottom spacing of 1.5 times the
+			// baseline font height. This means that for any element with a
+			// `font-size` other than `1em` we have to normalize in order to
+			// preserve the rhythm. `h1` has a `font-size` of `3em`, so that's
+			// the normalizing factor that we use here.
+			margin: (1.5em/3) 0 0 0;
+			.version {
+				color: $gray-line;
+			}
+		}
+		h2 {
+			font-size: 1.5em;
+			margin: 0 0 (1.5em/1.5) 0;
 		}
 	}
-	h2 {
-		font-size: 1.5em;
-		margin: 0 0 (1.5em/1.5) 0;
-	}
-}
 
-nav {
-	margin-bottom: 1.5em;
-	padding: .5em $side-space;
+	& > nav {
+		margin-bottom: 1.5em;
+		padding: .5em $side-space;
 
-	background-color: $link-color;
+		background-color: $link-color;
 
-	a {
-		@include hover-link;
-		@include link-colors($inverted-color, $inverted-color, $inverted-color, $inverted-color, $inverted-color);
-		@include single-text-shadow($font-color);
+		a {
+			@include hover-link;
+			@include link-colors($inverted-color, $inverted-color, $inverted-color, $inverted-color, $inverted-color);
+			@include single-text-shadow($font-color);
 
-		&.selected {
-			font-weight: bold;
-		}
+			&.selected {
+				font-weight: bold;
+			}
 
-		margin-left: .7em;
-		&:first-child {
-			margin-left: 0;
+			margin-left: .7em;
+			&:first-child {
+				margin-left: 0;
+			}
 		}
 	}
+
+	& > section {
+		margin: 0 $side-space;
+		// TODO: Optimize for 1280x800.
+		max-width: 85em;
+
+		& > aside {
+			float: right;
+			width: 38%;
+		}
+		& > article {
+			margin-right: 42%;
+			// The baseline assumption is that any otherwise marginless element
+			// directly under `article` represents a "block" of content which
+			// will have a spacing at its top (by means of the bottom margin on
+			// the preceding block) and therefore also needs a spacing at its
+			// bottom.
+			& > div, & > section, & > details {
+				margin-bottom: 1.5em;
+			}
+		}
+	}
+
+	& > footer {
+		background-color: $gray-fill;
+		position: relative;
+		overflow-y: hidden;
+
+		font-size: .8em;
+		margin: (1.5em*2/.8) 0 0 0;
+		p {
+			margin-bottom: (1.5em/.8);
+		}
+		padding: 1em $side-space/.8 0 $side-space/.8;
+		.no-theme {
+			position: absolute;
+			top: 1em;
+			right: $side-space/.8;
+
+			opacity: .2;
+			@include single-transition(opacity);
+		}
+		&:hover .no-theme {
+			opacity: 1;
+		}
+
+		.love {
+			color: $love;
+		}
+	}
+
 }
 
 #{headings()} {
 	font-family: Calibri, $blueprint-font-family;
 }
 
-section {
-	margin: 0 $side-space;
-	max-width: 80em;
-
-	aside {
-		float: right;
-		width: 30%;
-	}
-	article {
-		margin-right: 35%;
-	}
+summary {
+	cursor: default;
 }
 
 code {
@@ -136,34 +182,6 @@ code {
 			background-color: transparent;
 			padding: 0;
 		}
-	}
-	margin-bottom: 1.5em;
-}
-
-footer {
-	position: relative;
-	border-top: 1px dashed $gray-line;
-
-	font-size: .8em;
-	margin: (1.5em*2/.8) 0 0 0;
-	p {
-		margin-bottom: (1.5em/.8);
-	}
-	padding: 1em $side-space/.8 0 $side-space/.8;
-	.no-theme {
-		position: absolute;
-		top: 1em;
-		right: $side-space/.8;
-
-		opacity: .2;
-		@include single-transition(opacity);
-	}
-	&:hover .no-theme {
-		opacity: 1;
-	}
-
-	.love {
-		color: $love;
 	}
 }
 
