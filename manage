@@ -6,10 +6,17 @@ dev)
 	;;
 release)
 	compass compile --force --environment production
-	# TODO: Commit and push to remotes
+	git commit --all "Compiled for release"
+	git push origin master:master
+	git push origin master:gh-pages
 	;;
 *)
 	echo "Usage: manage [command]"
-	echo "Commands: dev, release"
+	echo ""
+	echo "Commands:"
+	echo "  dev       Continuous non-compressing compilation"
+	echo "  release   Compile compressed, commit, push and publish"
+	echo ""
+	echo "Dependencies: compass, git"
 	;;
 esac
