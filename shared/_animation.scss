@@ -1,8 +1,8 @@
 // Check out [the site](http://daneden.me/animate/).
 // Enable the first instead of the second line to load the full stack of
-// effects during development.
+// effects.
 //@import "https://raw.github.com/daneden/animate.css/master/animate.css";
-@import url("#{$path}/shared/animate.css");
+@include import-relative("shared/animate.css");
 
 @mixin animation($name, $delay: .25s, $duration: 1s, $timing-function: ease, $fill-mode: both) {
 	@include experimental(animation-name, $name);

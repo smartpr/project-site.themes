@@ -1,28 +1,23 @@
+@import "base";
+
 $blueprint-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-$blueprint-fixed-font-family: Consolas, Menlo, monospace;
+$blueprint-fixed-font-family: Inconsolata, Consolas, Menlo, monospace;
 $blueprint-font-size: 14px;
 $link-color: #1e90ff;	// DodgerBlue
 $default-text-shadow-v-offset: .1em;
 
-// Enable the first instead of the second line and fill in your local URL
-// during development.
-//$path: "http://dev/project-site.themes";
-$path: "http://projects.smart.pr/project-site.themes";
-
 // Check out [the site](http://necolas.github.com/normalize.css/).
-@import url("#{$path}/shared/normalize.css");
-
+@include import-relative("shared/normalize.css");
 // Generated from the command line:
 //     pygmentize -S default -f html > pygments.default.css
-@import url("#{$path}/shared/pygments.default.css");
-
-// This is a partial and will not result in an `@import` statement, so we can
-// reference it relatively.
-@import "../shared/animation";
+@include import-relative("shared/pygments.default.css");
+@import "animation";
 
 @import "compass/css3";
 @import "compass/typography";
 @import "blueprint/typography";
+
+@include font-face("Inconsolata", font-files("Inconsolata.otf", opentype));
 
 // Locals.
 $gray-line: #eaeaea;

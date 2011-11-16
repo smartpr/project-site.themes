@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+case $1 in
+dev)
+	compass watch --poll --environment development
+	;;
+release)
+	compass compile --force --environment production
+	# TODO: Commit and push to remotes
+	;;
+*)
+	echo "Usage: manage [command]"
+	echo "Commands: dev, release"
+	;;
+esac

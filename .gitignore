@@ -3,5 +3,3 @@
 *.swp
 *.orig
 .sass-cache/
-dev
-build
