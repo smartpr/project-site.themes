@@ -15,7 +15,11 @@ release)
 	echo ""
 	echo "Commands:"
 	echo "  dev       Continuous non-compressing compilation"
-	echo "  release   Compile compressed, commit, push and publish"
+	echo "  release   Compile compressed, commit, push and publish. The rationale here is"
+	echo "            that changes should be committed and optionally pushed to"
+	echo "            origin/master manually, and this command can be used to release"
+	echo "            a production-ready representation of the current code base to"
+	echo "            origin/gh-pages."
 	echo ""
 	echo "Dependencies: compass, git"
 	;;
