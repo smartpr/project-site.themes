@@ -6,7 +6,7 @@ dev)
 	;;
 release)
 	compass compile --force --environment production
-	git commit --all "Compiled for release"
+	git commit --all -m "Compiled for release"
 	git push origin master:master
 	git push origin master:gh-pages
 	;;
