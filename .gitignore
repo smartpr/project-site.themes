@@ -3,3 +3,4 @@
 *.swp
 *.orig
 .sass-cache/
+.manage.pids

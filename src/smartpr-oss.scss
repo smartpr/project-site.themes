@@ -26,21 +26,14 @@ $inverted-color: #f5f5f5;	// WhiteSmoke
 $love: #ff0000;	// Red
 $side-space: 2em;
 
-// BASE
-
 @include blueprint-typography;
 
 html {
 	background-color: $gray-fill;
-	overflow: {
-		// We don't want horizontal animations to result in horizontal
-		// scrollbars popping up for a brief moment.
-		x: hidden;
-		// We don't want centered content to move position when switching from
-		// a page that doesn't require scrolling to a page that does (and vice
-		// versa).
-		y: scroll;
-	}
+	// We don't want centered content to move position when switching from a
+	// page that doesn't require scrolling to a page that does (and vice
+	// versa).
+	overflow-y: scroll;
 }
 
 body {
@@ -66,6 +59,26 @@ body {
 		h2 {
 			font-size: 1.5em;
 			margin: 0 0 (1.5em/1.5) 0;
+		}
+		.sponsor {
+			position: absolute;
+			top: (1em/.8);
+			right: (2em/.8);
+			height: image-height("smartpr.png");
+			line-height: image-height("smartpr.png");
+			font-size: .8em;
+			a {
+				display: inline-block;
+				vertical-align: middle;
+				width: image-width("smartpr.png");
+				height: image-height("smartpr.png");
+				margin-left: (1em/.8);
+				@include hide-text;
+				background: {
+					image: inline-image("smartpr.png");
+					repeat: no-repeat;
+				}
+			}
 		}
 	}
 
@@ -129,6 +142,9 @@ body {
 			top: 1em;
 			right: $side-space/.8;
 
+			// Don't use `opacity()` because it will fallback to filters for
+			// IE, which results in a very ugly button in that browser. No
+			// opacity is preferred in that case.
 			opacity: .2;
 			@include single-transition(opacity);
 		}
@@ -176,50 +192,6 @@ code {
 			// Cancel out inline `code` style.
 			background-color: transparent;
 			padding: 0;
-		}
-	}
-}
-
-// SPONSORED
-
-#sponsor {
-	@include animation(bounceInRight, 1s, 2s, ease, both);
-
-	p {
-		font-size: .8em;
-		text-align: center;
-		background: {
-			// TODO: In IE this image doesn't show (while the other does).
-			image: inline-image("smartpr-bulb.png");
-			repeat: no-repeat;
-			position: center top;
-		}
-		
-		margin: 0;
-		padding: {
-			top: image-height("smartpr-bulb.png") + 10px;
-			// The axis of the logo is not in the middle of the image, so we
-			// have to shift the text a bit.
-			right: 8px;
-			bottom: image-height("smartpr-name.png");
-			left: 0;
-		}
-		width: image-width("smartpr-bulb.png") - 8px;
-
-		position: relative;
-		a {
-			position: absolute;
-			top: 0;
-			right: 8px;
-			bottom: 0;
-			left: 0;
-
-			@include hide-text;
-			background: {
-				image: inline-image("smartpr-name.png");
-				repeat: no-repeat;
-				position: center image-height("smartpr-bulb.png") + 30px;
-			}
 		}
 	}
 }
