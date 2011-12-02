@@ -127,6 +127,9 @@ body {
 		}
 		& > article {
 			margin-right: 42%;
+			h2 {
+				display: none;
+			}
 			// The baseline assumption is that any otherwise marginless element
 			// directly under `article` represents a "block" of content which
 			// will have a spacing at its top (by means of the bottom margin on
