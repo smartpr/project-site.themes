@@ -1,8 +1,18 @@
 #!/usr/bin/env sh
 
+# Keep track of pids of launched processes so we can keep the house clean.
+PIDS_FILE=`dirname $0`/.manage.pids
+
+# Kill all processes that were spawned the last time this script executed.
+if [ -f $PIDS_FILE ]; then
+	kill -KILL `cat $PIDS_FILE`
+	rm $PIDS_FILE
+fi
+
 case $1 in
 dev)
-	compass watch --poll --environment development
+	compass watch --poll --environment development &
+	echo $! >> $PIDS_FILE
 	;;
 release)
 	compass compile --force --environment production
@@ -20,7 +30,7 @@ release)
 	echo "            origin/master manually, and this command can be used to release"
 	echo "            a production-ready representation of the current code base to"
 	echo "            origin/gh-pages."
-	echo "  *         Display this description"
+	echo "  *         Kill any running processes and display this description"
 	echo ""
 	echo "Dependencies: compass, git"
 	;;
