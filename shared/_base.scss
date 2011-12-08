@@ -1,3 +1,6 @@
 @mixin import-relative($path) {
 	@import url("#{stylesheet-url($path, true)}");
 }
+
+// Check out [the site](http://necolas.github.com/normalize.css/).
+@include import-relative("shared/normalize.css");

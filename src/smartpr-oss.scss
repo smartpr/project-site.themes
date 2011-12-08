@@ -4,15 +4,15 @@ $blueprint-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 $blueprint-fixed-font-family: Inconsolata, Consolas, Menlo, monospace;
 $blueprint-font-size: 14px;
 $link-color: #1e90ff;	// DodgerBlue
+$default-box-shadow-color: rgba(0, 0, 0, .5);
 $default-box-shadow-v-offset: .1em;
-$default-box-shadow-blur: .1em;
+$default-box-shadow-blur: .3em;
+$default-text-shadow-v-offset: 1px;
+$default-text-shadow-blur: 0;
 
-// Check out [the site](http://necolas.github.com/normalize.css/).
-@include import-relative("shared/normalize.css");
 // Generated from the command line:
 //     pygmentize -S default -f html > pygments.default.css
 @include import-relative("shared/pygments.default.css");
-@import "animation";
 
 @import "compass/css3";
 @import "compass/typography";
@@ -22,15 +22,20 @@ $default-box-shadow-blur: .1em;
 @include font-face("Calibri", font-files("Calibri.ttf", truetype));
 
 // Locals.
-$gray-line: #eaeaea;
-$gray-fill: adjust-lightness($gray-line, 5%);
-$love: #ff0000;	// Red
+$smartpr-yellow: #f4dd44;
+$smartpr-lighter-yellow: lighten($smartpr-yellow, 30%);
+$background-color: darken(White, 7%);
+$love-color: #ff0000;
 $side-space: 2em;
 
+// This does not set the `kbd` and `samp` elements to
+// `$blueprint-fixed-font-family`, while `normalize.css` does monospace them.
+// We do not correct this, because our monospace font setting is ugly for short
+// excerpts such as `⌘B`.
 @include blueprint-typography;
 
 html {
-	background-color: $gray-fill;
+	background-color: $background-color;
 	// We don't want centered content to move position when switching from a
 	// page that doesn't require scrolling to a page that does (and vice
 	// versa).
@@ -40,142 +45,186 @@ html {
 body {
 	-webkit-font-smoothing: antialiased;
 	background-color: White;
+}
 
-	& > header {
-		margin: 0 2em;
-		// Make sure no background color from `html` is visible.
-		overflow-y: hidden;
-		h1 {
-			// We are building upon the rhythm as set by `blueprint-
-			// typography`, which uses a bottom spacing of 1.5 times the
-			// baseline font height. This means that for any element with a
-			// `font-size` other than `1em` we have to normalize in order to
-			// preserve the rhythm. `h1` has a `font-size` of `3em`, so that's
-			// the normalizing factor that we use here.
-			margin: (1.5em/3) 0 0 0;
-			.version {
-				color: $gray-line;
-			}
-		}
-		h2 {
-			font-size: 1.5em;
-			margin: 0 0 (1.5em/1.5) 0;
-		}
-		.sponsor {
-			position: absolute;
-			top: (1em/.8);
-			right: (2em/.8);
-			height: image-height("smartpr.png");
-			line-height: image-height("smartpr.png");
-			font-size: .8em;
-			a {
-				display: inline-block;
-				vertical-align: middle;
-				width: image-width("smartpr.png");
-				height: image-height("smartpr.png");
-				margin-left: (1em/.8);
-				@include hide-text;
-				background: {
-					image: inline-image("smartpr.png");
-					repeat: no-repeat;
-				}
+body > header {
+	margin: 0 2em;
+	// Make sure no background color from `html` is visible.
+	overflow-y: hidden;
+	h1 {
+		// We are building upon the rhythm as set by `blueprint-
+		// typography`, which uses a bottom spacing of 1.5 times the
+		// baseline font height. This means that for any element with a
+		// `font-size` other than `1em` we have to normalize in order to
+		// preserve the rhythm. `h1` has a `font-size` of `3em`, so that's
+		// the normalizing factor that we use here.
+		margin: (1.5em/3) 0 0 0;
+		.version {
+			color: White;
+			font-size: .5em;
+			background-color: $background-color;
+			@include border-radius;
+			position: relative;
+			bottom: .3em;
+			left: .2em;
+			padding: 0 .3em .1em .3em;
+			&:before {
+				content: "v";
 			}
 		}
 	}
-
-	& > nav {
-		// TODO: We should make this bar slightly wider than the viewport, to
-		// prevent the box shadow from ending before the edge.
-
-		margin-bottom: 1.5em;
-		padding: .5em $side-space;
-
-		background-color: $link-color;
-		@include box-shadow;
-
-		a {
-			$nav-color: adjust-lightness($link-color, 40%);
-			@include link-colors($nav-color, $nav-color, $nav-color, $nav-color, $nav-color);
-			text-decoration: none;
-			font-weight: bold;
-			@include single-text-shadow($default-box-shadow-color, 0, -.1em, .1em);
-
-			&:hover {
-				color: LemonChiffon;
-				@include single-text-shadow(none);
-			}
-			&.selected, &.selected:hover {
-				color: #ffeb6d;
-				@include single-text-shadow(#ffeb6d, 0, 0, 1em);
-			}
-
-			margin-left: 1em;
-			&:first-child {
-				margin-left: 0;
-			}
-		}
+	h2 {
+		font-size: 1.5em;
+		margin: 0 0 (1.5em/1.5) 0;
 	}
-
-	& > section {
-		margin: 0 $side-space;
-		// TODO: Optimize for 1280x800.
-		max-width: 85em;
-
-		& > aside {
-			float: right;
-			width: 38%;
-		}
-		& > article {
-			margin-right: 42%;
-			h2 {
-				display: none;
-			}
-			// The baseline assumption is that any otherwise marginless element
-			// directly under `article` represents a "block" of content which
-			// will have a spacing at its top (by means of the bottom margin on
-			// the preceding block) and therefore also needs a spacing at its
-			// bottom.
-			& > div, & > section, & > details {
-				margin-bottom: 1.5em;
-			}
-		}
-	}
-
-	& > footer {
-		background-color: $gray-fill;
-		position: relative;
-		overflow-y: hidden;
-
+	.sponsor {
+		position: absolute;
+		top: (1em/.8);
+		right: (2em/.8);
+		height: image-height("smartpr.png");
+		line-height: image-height("smartpr.png");
 		font-size: .8em;
-		margin: (1.5em*2/.8) 0 0 0;
-		p {
-			margin-bottom: (1.5em/.8);
-		}
-		padding: 1em $side-space/.8 0 $side-space/.8;
-		.no-theme {
-			position: absolute;
-			top: 1em;
-			right: $side-space/.8;
-
-			// Don't use `opacity()` because it will fallback to filters for
-			// IE, which results in a very ugly button in that browser. No
-			// opacity is preferred in that case.
-			opacity: .2;
-			@include single-transition(opacity);
-		}
-		&:hover .no-theme {
-			opacity: 1;
-		}
-
-		.love {
-			color: $love;
+		a {
+			display: inline-block;
+			vertical-align: middle;
+			width: image-width("smartpr.png");
+			height: image-height("smartpr.png");
+			margin-left: (1em/.8);
+			@include hide-text;
+			background: {
+				image: inline-image("smartpr.png");
+				repeat: no-repeat;
+			}
 		}
 	}
+}
 
+body > nav {
+	// TODO: We should make this bar slightly wider than the viewport, to
+	// prevent the box shadow from ending before the edge.
+
+	margin-bottom: 1.5em;
+	padding: .5em $side-space;
+
+	background-color: $link-color;
+	@include single-box-shadow;
+
+	a {
+		text-decoration: none;
+		font-weight: bold;
+
+		$nav-link-color: rgba(255, 255, 255, .9);
+		@include link-colors($nav-link-color, $nav-link-color, $nav-link-color, $nav-link-color);
+
+		margin-left: 1em;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+}
+// Only apply inset text shadow if we are certain that the browser can manage.
+html.backgroundclip body > nav a {
+	background-color: $default-box-shadow-color;
+	@include background-clip(text);
+	@include link-colors(transparent, transparent, transparent, transparent, transparent);
+	@include single-text-shadow(rgba(255, 255, 255, .9));
+	&:hover, &.selected {
+		@include single-text-shadow(none);
+	}
+}
+// Use the same level of explicitness as the preceding declarations so that we
+// are capable of overriding them.
+html, html.backgroundclip, html.no-backgroundclip {
+	body > nav a {
+		&:hover {
+			color: $smartpr-lighter-yellow;
+			@include single-text-shadow(adjust-hue($smartpr-yellow, -10deg));
+		}
+		&.selected, &.selected:hover {
+			$nav-link-shine-color: lighten($smartpr-yellow, 15%);
+			color: $nav-link-shine-color;
+			@include text-shadow(
+				adjust-hue($smartpr-yellow, -20deg) $default-text-shadow-h-offset $default-text-shadow-v-offset $default-text-shadow-blur,
+				$nav-link-shine-color 0 0 1em
+			);
+		}
+	}
+}
+
+body > section {
+	margin: 0 $side-space;
+	// TODO: Optimize for 1280x800.
+	max-width: 85em;
+
+	& > aside {
+		float: right;
+		width: 38%;
+
+		// If the first `aside` below the navigation bar starts with a heading,
+		// collapse its top margin to keep it aligned with the content in the
+		// `article`s.
+		#{nest("&:first-of-type >", append-selector(headings(), ":first-child"))} {
+			margin-top: 0;
+		}
+	}
+	& > article {
+		margin-right: 42%;
+		h2 {
+			display: none;
+		}
+		// The baseline assumption is that any otherwise marginless element
+		// directly under `article` represents a "block" of content which
+		// will have a spacing at its top (by means of the bottom margin on
+		// the preceding block) and therefore also needs a spacing at its
+		// bottom.
+		& > div, & > section, & > details {
+			margin-bottom: 1.5em;
+		}
+	}
+}
+
+body > footer {
+	background-color: $background-color;
+	position: relative;
+	overflow-y: hidden;
+	// TODO: We need to have the right, bottom and left edge of this element
+	// sticking out of the viewport so that the corresponding inset shadows
+	// are not visible.
+	@include single-box-shadow($inset: true);
+
+	font-size: .8em;
+	margin: (1.5em*2/.8) 0 0 0;
+	p {
+		margin-bottom: (1.5em/.8);
+	}
+	padding: 1em $side-space/.8 0 $side-space/.8;
+	.no-theme {
+		position: absolute;
+		top: 1em;
+		right: $side-space/.8;
+
+		// Don't use `opacity()` because it will fallback to filters for
+		// IE, which results in a very ugly button in that browser. No
+		// opacity is preferred in that case.
+		opacity: .2;
+		@include single-transition(opacity);
+	}
+	&:hover .no-theme {
+		opacity: 1;
+	}
+
+	.love {
+		color: $love-color;
+	}
 }
 
 #{headings()} {
 	font-family: Calibri, $blueprint-font-family;
+}
+
+.standout {
+	background-color: $smartpr-lighter-yellow;
+	@include single-box-shadow;
 }
 
 summary {
@@ -187,18 +236,14 @@ code {
 	// normalize.css/issues/55).
 	// TODO: In IE lines are still wrapping.
 	word-wrap: normal;
-	background-color: $gray-fill;
+	background-color: $background-color;
 	padding: .2em 0;
 }
 
 .highlight {
 	overflow-x: auto;
-	background-color: $gray-fill;
+	background-color: $background-color;
 	@include border-radius;
-	border: {
-		top: 1px solid $gray-line;
-		bottom: 1px solid $gray-line;
-	}
 
 	& > pre {
 		margin: 0;
